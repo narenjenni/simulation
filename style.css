@@ -191,14 +191,26 @@ input:focus,textarea:focus{outline:none;box-shadow:var(--ring);border-color:var(
   .cards-4{grid-template-columns:repeat(2,1fr)}
 }
 @media (max-width: 768px){
-  .nav-toggle{display:flex}
-  .nav-menu{position:fixed;inset:64px 0 auto auto;right:-100%;width:86%;max-width:360px;background:#fff;box-shadow:var(--shadow);border-left:1px solid rgba(0,0,0,.06);height:calc(100vh - 64px);display:flex;flex-direction:column;gap:.2rem;padding:1rem;transition:var(--tr);overflow:auto}
-  .nav-menu.open{right:0}
-  .nav-link{padding:.9rem 1rem;font-size:1.02rem}
-  .contact-grid{grid-template-columns:1fr}
-  .cards-3{grid-template-columns:1fr}
-  .testimonials{grid-template-columns:1fr}
-  .steps{grid-template-columns:1fr 1fr}
+  .nav-menu {
+    display: none;
+  }
+  .nav-menu.open {
+    display: flex;
+    position: fixed;
+    inset: 64px 0 auto auto;
+    right: 0;
+    width: 86%;
+    max-width: 360px;
+    background: #fff;
+    box-shadow: var(--shadow);
+    border-left: 1px solid rgba(0,0,0,.06);
+    height: calc(100vh - 64px);
+    flex-direction: column;
+    gap: .2rem;
+    padding: 1rem;
+    overflow: auto;
+  }
+}
 }
 @media (max-width: 520px){
   .hero-highlights{grid-template-columns:1fr}
