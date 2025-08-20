@@ -1,22 +1,25 @@
-// ===== Mobile nav =====
-const toggle = document.getElementById('nav-toggle');
-const menu = document.getElementById('nav-menu');
+// Navigation toggle
+const navToggle = document.getElementById('nav-toggle');
+const navMenu = document.getElementById('nav-menu');
 
-if (toggle && menu){
-  toggle.addEventListener('click', () => {
-    const isOpen = menu.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', String(isOpen));
-  });
+if (navToggle && navMenu) {
+    navToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('open');   // pakai open
+        navToggle.classList.toggle('open'); // opsional untuk animasi icon
+        if (navMenu.classList.contains('open')) {
+            animateMenuItems();
+        }
+    });
 }
 
-// Close on link click (mobile)
-document.querySelectorAll('.nav-link').forEach(a => {
-  a.addEventListener('click', () => {
-    if (menu.classList.contains('open')){
-      menu.classList.remove('open');
-      toggle.setAttribute('aria-expanded','false');
-    }
-  });
+// Close menu on link click
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        if (navMenu.classList.contains('open')) {
+            navMenu.classList.remove('open');
+            navToggle.classList.remove('open');
+        }
+    });
 });
 
 // ===== Intersection Observer animations =====
