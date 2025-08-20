@@ -342,21 +342,50 @@ input:focus,textarea:focus{outline:none;box-shadow:var(--ring);border-color:var(
   .hero-highlights{grid-template-columns:1fr 1fr}
   .cards-4{grid-template-columns:repeat(2,1fr)}
 }
+
+/* Improved animations for mobile */
 @media (max-width: 768px){
-  .nav-toggle{display:flex}
-  .nav-menu{position:fixed;inset:64px 0 auto auto;right:-100%;width:86%;max-width:360px;background:#fff;box-shadow:var(--shadow);border-left:1px solid rgba(0,0,0,.06);height:calc(100vh - 64px);display:flex;flex-direction:column;gap:.2rem;padding:1rem;transition:var(--tr);overflow:auto}
-  .nav-menu.open{right:0}
-  .nav-link{padding:.9rem 1rem;font-size:1.02rem}
-  .contact-grid{grid-template-columns:1fr}
-  .cards-3{grid-template-columns:1fr}
-  .testimonials{grid-template-columns:1fr}
-  .steps{grid-template-columns:1fr 1fr}
+  .card{
+    transform:translateY(20px);
+    transition:transform .6s ease,opacity .6s ease, box-shadow .3s ease;
+  }
+  .facility{
+    transform:translateY(20px);
+    transition:transform .6s ease,opacity .6s ease;
+  }
+  .tl-item{
+    transform:translateY(20px);
+    transition:transform .6s ease,opacity .6s ease;
+  }
+  .testimonial{
+    transform:translateY(20px);
+    transition:transform .6s ease,opacity .6s ease;
+  }
+  .acc-item{
+    transform:translateY(20px);
+    transition:transform .6s ease,opacity .6s ease;
+  }
+  
+  /* Adjust grid for better mobile layout */
+  .cards-3, .cards-4 {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .card {
+    padding: 1.5rem;
+  }
 }
-@media (max-width: 520px){
-  .hero-highlights{grid-template-columns:1fr}
-  .cards-4{grid-template-columns:1fr}
-  .footer-grid{grid-template-columns:1fr}
-}
+
+/* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce){
-  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+  .card,
+  .facility,
+  .tl-item,
+  .testimonial,
+  .acc-item {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
 }
