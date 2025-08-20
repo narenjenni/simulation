@@ -51,36 +51,77 @@ document.addEventListener('keydown', (e) => {
 // ===== Intersection Observer animations =====
 function ioReveal(containerSelector, itemSelector){
   const containers = document.querySelectorAll(containerSelector);
+  
+  // Check if user prefers reduced motion
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  
+  if (prefersReducedMotion) {
+    // Skip animations for users who prefer reduced motion
+    containers.forEach(container => {
+      container.querySelectorAll(itemSelector).forEach(el => {
+        el.classList.add('in-view');
+      });
+    });
+    return;
+  }
+  
+  const observerOptions = {
+    threshold: 0.15,
+    rootMargin: '0px 0px -50px 0px' // Trigger when element is 50px from bottom of viewport
+  };
+  
   const observer = new IntersectionObserver((entries)=>{
     entries.forEach(entry => {
       if (entry.isIntersecting){
+        // Add delay between each item animation
         entry.target.querySelectorAll(itemSelector).forEach((el, i)=>{
-          el.style.transitionDelay = `${i * 60}ms`;
-          el.classList.add('in-view');
+          // Calculate delay based on index (stagger effect)
+          const delay = Math.min(i * 100, 600); // Max delay of 600ms
+          setTimeout(() => {
+            el.classList.add('in-view');
+          }, delay);
         });
         observer.unobserve(entry.target);
       }
     });
-  },{threshold:0.12});
-  containers.forEach(c=>observer.observe(c));
-}
-ioReveal('[data-io=".card"]', '.card');
-ioReveal('[data-io=".facility"]', '.facility');
-ioReveal('.timeline', '.tl-item');
-ioReveal('.testimonials', '.testimonial');
-ioReveal('.accordion', '.acc-item');
-
-// ===== Smooth scroll for on-page anchors =====
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', (e) => {
-    const id = anchor.getAttribute('href');
-    if (!id || id === '#') return;
-    const target = document.querySelector(id);
-    if (!target) return;
-    e.preventDefault();
-    const top = target.getBoundingClientRect().top + window.scrollY - 70;
-    window.scrollTo({top, behavior:'smooth'});
+  }, observerOptions);
+  
+  containers.forEach(c => {
+    // Only observe if not already in view
+    if (c.getBoundingClientRect().top < window.innerHeight * 0.8) {
+      c.querySelectorAll(itemSelector).forEach(el => {
+        el.classList.add('in-view');
+      });
+    } else {
+      observer.observe(c);
+    }
   });
+}
+
+// Initialize animations with improved settings
+document.addEventListener('DOMContentLoaded', function() {
+  // Wait a bit for the page to load completely
+  setTimeout(() => {
+    ioReveal('[data-io=".card"]', '.card');
+    ioReveal('[data-io=".facility"]', '.facility');
+    ioReveal('.timeline', '.tl-item');
+    ioReveal('.testimonials', '.testimonial');
+    ioReveal('.accordion', '.acc-item');
+  }, 300);
+});
+
+// Re-run animations when user resizes window (to fix any layout issues)
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    document.querySelectorAll('.card, .facility, .tl-item, .testimonial, .acc-item').forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight && 
+          !el.classList.contains('in-view')) {
+        el.classList.add('in-view');
+      }
+    });
+  }, 250);
 });
 
 // ===== Contact form (client-side only demo) =====
